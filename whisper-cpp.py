@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 import subprocess
@@ -76,10 +77,17 @@ def processing(queue_item):
         return
 
     with open(output_file_path, 'r') as file:
-        result_str = file.read()
+        result_str = str(file.read()).strip()
 
     print('Sending the result...')
-    res = send_queue_result_dict(queue_item['uuid'], {'result': result_str.strip()})
+    if output_type in ['json', 'json-full']:
+        result_obj = json.loads(result_str)
+        result_obj.pop('systeminfo', None)
+        result_obj.pop('model', None)
+        result_obj.pop('params', None)
+        result_str = json.dumps(result_obj)
+
+    res = send_queue_result_dict(queue_item['uuid'], {'result': result_str})
     print()
     print('Completed.')
 
