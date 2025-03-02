@@ -2,7 +2,7 @@
 
 WORKERS=('api2app-workers/whisper-cpp.py')
 WORKERS_NUM=(1)
-QUEUE_SIZE_URLS=()
+QUEUE_SIZE_URLS=('https://queue.api2app.org/queue_size/ea474c9a-c631-4bac-9141-ba26b0ff56c5')
 
 DIR="$(pwd)"
 ACTION="none"
