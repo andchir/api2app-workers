@@ -10,7 +10,7 @@ from utils.upload_file import delete_old_files
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WHISPER_CLI_PATH = '/home/andrew/PycharmProjects/whisper.cpp/build/bin/whisper-cli'
 WHISPER_MODEL_PATH = '/home/andrew/PycharmProjects/whisper.cpp/models/ggml-medium.bin'
-MAX_DURATION = 30 * 60 # 30 minutes maximum
+MAX_DURATION = 40 * 60 # 40 minutes maximum
 
 
 def processing(queue_item):
