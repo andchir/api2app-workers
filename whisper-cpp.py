@@ -59,27 +59,29 @@ def processing(queue_item):
     ]
     result = subprocess.run(command, capture_output=True, text=True)
 
-    if 'saving output to' in str(result):
-        if output_type in ['json', 'json-full']:
-            output_file_path += '.json'
-        else:
-            output_file_path += '.' + output_type
-        if not os.path.isfile(output_file_path):
-            print(f'Output file not found. Send error message - Processing error.')
-            print()
-            send_queue_error(queue_item['uuid'], 'Processing error. Please try again later.')
-            return
-
-        with open(output_file_path, 'r') as file:
-            result_str = file.read()
-
-        print('Sending the result...')
-        res = send_queue_result_dict(queue_item['uuid'], {'result': result_str.strip()})
+    if not 'saving output to' in str(result):
+        print(f'Processing error.')
         print()
-        print('Completed.')
-
-    else:
         send_queue_error(queue_item['uuid'], 'Processing error. Please try again later.')
+        return
+
+    if output_type in ['json', 'json-full']:
+        output_file_path += '.json'
+    else:
+        output_file_path += '.' + output_type
+    if not os.path.isfile(output_file_path):
+        print(f'Output file not found. Send error message - Processing error.')
+        print()
+        send_queue_error(queue_item['uuid'], 'Processing error. Please try again later.')
+        return
+
+    with open(output_file_path, 'r') as file:
+        result_str = file.read()
+
+    print('Sending the result...')
+    res = send_queue_result_dict(queue_item['uuid'], {'result': result_str.strip()})
+    print()
+    print('Completed.')
 
     # Delete old files
     deleted_input = delete_old_files(upload_dir_path, max_hours=2)
