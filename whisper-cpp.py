@@ -22,6 +22,9 @@ def processing(queue_item):
     # Download all files to a local folder
     image_file_path, audio_file_path, video_file_path, image_file_path2 = upload_queue_files(queue_item, upload_dir_path)
 
+    if not audio_file_path:
+        audio_file_path = video_file_path
+
     if not audio_file_path or not os.path.isfile(audio_file_path):
         print('Send error message - File not found.')
         send_queue_error(queue_item['uuid'], 'File not found.')
@@ -99,4 +102,4 @@ def processing(queue_item):
 
 if __name__ == '__main__':
     # Waiting for new tasks (polling)
-    polling_queue('ea474c9a-c631-4bac-9141-ba26b0ff56c5', processing)
+    polling_queue('3ab88d39-e0ad-45f3-8c71-7558ded5c101', processing)
